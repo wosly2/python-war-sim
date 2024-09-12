@@ -44,6 +44,8 @@ while len(remaining_indices) > 0:
             deck_2.append(deck[index_choice])
 
 def simulate(two_beats_ace:bool=True) -> None:
+    # complete the simulate func
+    print("simulate")
     pass
 
 if __name__ == "__main__":
