@@ -102,13 +102,10 @@ def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool=True, prin
                 del deck_1[0:3], deck_2[0:3]
                 if verbose:
                     print("Winnings at stake:", war_winnings)
-        #if verbose:
-        #    print("\n")
+        if verbose:
+            print("\n")
         iterations += 1
     if len(deck_1) == 0:
         print("Player 2 won the game!")
     elif len(deck_2) == 0:
         print("Player 1 won the game!")
-
-if __name__ == "__main__":
-    simulate()
