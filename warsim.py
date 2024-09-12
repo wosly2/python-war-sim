@@ -90,13 +90,20 @@ def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool=True, prin
                     deck_2 += war_winnings
                 break
             elif winner == 0: # init a war
+                if verbose:
+                    print("WAR Initiated")
+                if len(deck_1) <= 3 or len(deck_2) <= 3: # if someone has insufficient cards, set to 0 to make them lose
+                    if len(deck_1) <= 3:
+                        deck_1 = []
+                    elif len(deck_2) <= 3:
+                        deck_2 = []
+                    break
                 war_winnings += deck_1[0:3] + deck_2[0:3]
                 del deck_1[0:3], deck_2[0:3]
                 if verbose:
-                    print("WAR Initiated")
                     print("Winnings at stake:", war_winnings)
-        if verbose:
-            print("\n")
+        #if verbose:
+        #    print("\n")
         iterations += 1
     if len(deck_1) == 0:
         print("Player 2 won the game!")
