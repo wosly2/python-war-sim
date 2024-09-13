@@ -1,5 +1,4 @@
 import random as rd
-import matplotlib.pyplot as plt
 
 
 # deck defs
@@ -48,15 +47,22 @@ def make_two_decks() -> tuple[list[str], list[str]]:
     return (deck_1, deck_2)
 
 # simulate func
-def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool|int=True, print_whole_deck:bool|int=False, plot_on:bool|int=True) -> None:
-    """Simulate a game of war between two players.
+def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool|int=True, print_winner:bool|int=True, print_whole_deck:bool|int=False) -> tuple[int, int, list, list]: # [winning player (1 or 2), iteration count, player_1_card_data, player_2_card_data]
+    """Simulates a game of war between two players.
 
     Keyword Arguments:
         two_beats_ace -- boolean, whether or not a two will be considered higher than an ace (default True)
         max_its -- int, maximum simulation iteration (default 10000)
         verbose -- bool|int, wether the program will print certain extra information to the terminal, does not affect final winner output (default True)
+        print_winner -- bool|int, wether the program will print the winner when verbose == False, or if verbose or print_winner then print (default True)
         print_whole_deck -- bool|int, whether the program will print the whole deck of either player each iteration when verbose == True (default False)
-        plot_on -- bool|int, wether the program will show matplotlib plot of the data (default True)
+
+    Output:
+        simulate() outputs a tuple with four indices.
+        0: (type int) winning player as 1 or 2
+        1: (type int) number of iterations
+        2: (type list[int]) number of cards in player 1's deck at each iteration
+        3: (type list[int]) number of cards in player 2's deck at each iteration
     """
     deck_1, deck_2 = make_two_decks()
     iterations = 0
@@ -119,18 +125,15 @@ def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool|int=True, 
         iterations += 1
 
     # declare winner
+    winner = 0
     if len(deck_1) == 0:
-        print("Player 2 won the game!")
+        if verbose or print_winner:
+            print("Player 2 won the game!")
+        winner = 2
     elif len(deck_2) == 0:
-        print("Player 1 won the game!")
+        winner = 1
+        if verbose or print_winner:
+            print("Player 1 won the game!")
 
-    # plot data
-    plt.clf()
-    plt.plot(list(range(iterations)), player_1_card_data, label="Player 1")
-    plt.plot(list(range(iterations)), player_2_card_data, label="Player 2")
-    plt.xlabel("Iterations")
-    plt.ylabel("Number of cards")
-    plt.title("Cards over iterations")
-    if plot_on:
-        plt.legend()
-        plt.show()
+    # return values
+    return winner, iterations, player_1_card_data, player_2_card_data
