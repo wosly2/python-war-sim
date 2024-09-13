@@ -1,4 +1,5 @@
 import random as rd
+import matplotlib.pyplot as plt
 
 
 # deck defs
@@ -11,7 +12,7 @@ for card in cards:
         deck.append(card)
 
 # func to find the higher card
-def return_winner(card_1:str, card_2:str, two_beats_ace:bool=True) -> int:
+def return_winner(card_1:str, card_2:str, two_beats_ace:bool|int=True) -> int:
     """Give two strings from list `cards` and return higher card or tie as int in 1, 2, 0."""
     card_1_val = cards.index(card_1)
     card_2_val = cards.index(card_2)
@@ -47,18 +48,27 @@ def make_two_decks() -> tuple[list[str], list[str]]:
     return (deck_1, deck_2)
 
 # simulate func
-def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool=True, print_whole_deck:bool=False) -> None:
+def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool|int=True, print_whole_deck:bool|int=False, plot_on:bool|int=True) -> None:
     """Simulate a game of war between two players.
 
     Keyword Arguments:
         two_beats_ace -- boolean, whether or not a two will be considered higher than an ace (default True)
         max_its -- int, maximum simulation iteration (default 10000)
-        verbose -- bool, wether the program will print certain extra information to the terminal, does not affect final winner output (default True)
-        print_whole_deck -- bool, whether the program will print the whole deck of either player each iteration when verbose == True (default False)
+        verbose -- bool|int, wether the program will print certain extra information to the terminal, does not affect final winner output (default True)
+        print_whole_deck -- bool|int, whether the program will print the whole deck of either player each iteration when verbose == True (default False)
+        plot_on -- bool|int, wether the program will show matplotlib plot of the data (default True)
     """
     deck_1, deck_2 = make_two_decks()
     iterations = 0
+    player_1_card_data, player_2_card_data = [], [] # for capturing data to plot
+
+    # game loop
     while len(deck_1) > 0 and len(deck_2) > 0 and iterations <= max_its:
+        # data collection
+        player_1_card_data.append(len(deck_1))
+        player_2_card_data.append(len(deck_2))
+
+        # output
         if verbose:
             print("Iteration:", iterations)
             if print_whole_deck:
@@ -102,10 +112,25 @@ def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool=True, prin
                 del deck_1[0:3], deck_2[0:3]
                 if verbose:
                     print("Winnings at stake:", war_winnings)
+
         if verbose:
             print("\n")
+
         iterations += 1
+
+    # declare winner
     if len(deck_1) == 0:
         print("Player 2 won the game!")
     elif len(deck_2) == 0:
         print("Player 1 won the game!")
+
+    # plot data
+    plt.clf()
+    plt.plot(list(range(iterations)), player_1_card_data, label="Player 1")
+    plt.plot(list(range(iterations)), player_2_card_data, label="Player 2")
+    plt.xlabel("Iterations")
+    plt.ylabel("Number of cards")
+    plt.title("Cards over iterations")
+    if plot_on:
+        plt.legend()
+        plt.show()
