@@ -2,19 +2,19 @@ import random as rd
 
 
 # deck defs
-cards: list[str] = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace",]
+card_vals: list[str] = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace",]
 
 # creating the deck
 deck: list[str] = []
-for card in cards:
+for card in card_vals:
     for i in range(4): # one for each suit
         deck.append(card)
 
 # func to find the higher card
 def return_winner(card_1:str, card_2:str, two_beats_ace:bool|int=True) -> int:
-    """Give two strings from list `cards` and return higher card or tie as int in 1, 2, 0."""
-    card_1_val = cards.index(card_1)
-    card_2_val = cards.index(card_2)
+    """Give two strings from list `card_vals` and return higher card or tie as int in 1, 2, 0."""
+    card_1_val = card_vals.index(card_1)
+    card_2_val = card_vals.index(card_2)
     if two_beats_ace and ((card_1_val == 0 and card_2_val == 51) or (card_1_val == 51 and card_2_val == 0)):
         if card_1_val == 0:
             return 1
@@ -61,8 +61,8 @@ def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool|int=True, 
         simulate() outputs a tuple with four indices.
         0: (type int) winning player as 1 or 2
         1: (type int) number of iterations
-        2: (type list[int]) number of cards in player 1's deck at each iteration
-        3: (type list[int]) number of cards in player 2's deck at each iteration
+        2: (type list[int]) number of card_vals in player 1's deck at each iteration
+        3: (type list[int]) number of card_vals in player 2's deck at each iteration
     """
     deck_1, deck_2 = make_two_decks()
     iterations = 0
@@ -80,12 +80,12 @@ def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool|int=True, 
             if print_whole_deck:
                 print("Player 1 deck:", deck_1)
                 print("Player 2 deck:", deck_2)
-            print("Player 1 has", len(deck_1), "cards")
-            print("Player 2 has", len(deck_2), "cards")
+            print("Player 1 has", len(deck_1), "card_vals")
+            print("Player 2 has", len(deck_2), "card_vals")
             print("Player 1 card:", deck_1[0])
             print("Player 2 card:", deck_2[0])
 
-        # find the winning player and move the appropriate cards
+        # find the winning player and move the appropriate card_vals
         war_winnings = []
         while 1:
             winner = return_winner(deck_1[0], deck_2[0])
@@ -108,7 +108,7 @@ def simulate(two_beats_ace:bool=True, max_its:int=10000, verbose:bool|int=True, 
             elif winner == 0: # init a war
                 if verbose:
                     print("WAR Initiated")
-                if len(deck_1) <= 3 or len(deck_2) <= 3: # if someone has insufficient cards, set to 0 to make them lose
+                if len(deck_1) <= 3 or len(deck_2) <= 3: # if someone has insufficient card_vals, set to 0 to make them lose
                     if len(deck_1) <= 3:
                         deck_1 = []
                     elif len(deck_2) <= 3:
